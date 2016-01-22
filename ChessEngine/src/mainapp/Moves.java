@@ -1,5 +1,7 @@
 package mainapp;
 
+import java.util.ArrayList;
+
 public class Moves {
 	
 	public static boolean whiteKingMoved;
@@ -12,21 +14,22 @@ public class Moves {
 	private static int whiteKingNumberOfMoves;
 	
 
-	public static String possibleMoves() {
-		String list = "";
+	public static ArrayList<String> possibleMoves() {
+		//String list = "";
+		ArrayList<String> list = new ArrayList<String>();
 		for (int i = 0; i < 64; i++) {
 			switch (Main.chessBoard[i/8][i%8]) {
-				case 'P': list += possibleP(i);
+				case 'P': list.addAll(possibleP(i));
 					break;
-				case 'R': list += possibleR(i);
+				case 'R': list.addAll(possibleR(i));
 					break;
-				case 'N': list += possibleN(i);
+				case 'N': list.addAll(possibleN(i));
 					break;
-				case 'B': list += possibleB(i);
+				case 'B': list.addAll(possibleB(i));
 					break;
-				case 'Q': list += possibleQ(i);
+				case 'Q': list.addAll(possibleQ(i));
 					break;
-				case 'K': list += possibleK(i);
+				case 'K': list.addAll(possibleK(i));
 					break;
 
 
@@ -35,9 +38,9 @@ public class Moves {
 		return list;//x1,y1,x2,y2,captured piece
 	}
 	
-	private static String possibleP(int i) {
+	private static ArrayList<String> possibleP(int i) {
 		
-		String list = "";
+		ArrayList<String> list = new ArrayList<String>();
 		char oldPiece;
 		int r = i/8, c = i%8;
 		
@@ -48,7 +51,8 @@ public class Moves {
 					Main.chessBoard[r][c] = ' ';
 					Main.chessBoard[r-1][c+j] = 'P';
 					if (kingSafe()) {
-                        list = list + r + c + (r-1) + (c+j) + oldPiece;
+						String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r-1) + String.valueOf(c+j) + oldPiece;
+                        list.add(tmp);
                     }
 					Main.chessBoard[r][c]='P';
                     Main.chessBoard[r-1][c+j]=oldPiece;
@@ -65,7 +69,8 @@ public class Moves {
 						Main.chessBoard[r-1][c+j] = t[k];
 						if (kingSafe()) {
 							// column1, column2, captured-piece, new-piece, P
-	                        list = list + c + (c+j) + oldPiece + t[k] + 'P';
+							String tmp = String.valueOf(c) + String.valueOf(c+j) + oldPiece + t[k] + 'p';
+	                        list.add(tmp);
 	                    }
 						Main.chessBoard[r][c]='P';
 	                    Main.chessBoard[r-1][c+j]=oldPiece;
@@ -82,7 +87,8 @@ public class Moves {
 				Main.chessBoard[r][c] = ' ';
 				Main.chessBoard[r-1][c] = 'P';
 				if (kingSafe()) {
-                    list = list + r + c + (r-1) + (c) + oldPiece;
+					String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r-1) + String.valueOf(c) + oldPiece;
+                    list.add(tmp);
                 }
 				Main.chessBoard[r][c]='P';
                 Main.chessBoard[r-1][c]=oldPiece;
@@ -97,7 +103,8 @@ public class Moves {
 				Main.chessBoard[r][c] = ' ';
 				Main.chessBoard[r-2][c] = 'P';
 				if (kingSafe()) {
-                    list = list + r + c + (r-2) + (c) + oldPiece;
+					String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r-2) + String.valueOf(c) + oldPiece;
+                    list.add(tmp);
                 }
 				Main.chessBoard[r][c]='P';
                 Main.chessBoard[r-2][c]=oldPiece;
@@ -114,7 +121,8 @@ public class Moves {
 					Main.chessBoard[r-1][c] = t[k];
 					if (kingSafe()) {
 						// column1, column2, captured-piece, new-piece, P
-                        list = list + c + (c) + oldPiece + t[k] + 'P';
+						String tmp = String.valueOf(c) + String.valueOf(c) + oldPiece + t[k] + 'P';
+	                    list.add(tmp);
 	                }
 					Main.chessBoard[r][c]='P';
 	                Main.chessBoard[r-1][c]=oldPiece;
@@ -126,8 +134,8 @@ public class Moves {
 		return list;
 	}
 
-	private static String possibleR(int i) {
-		String list = "";
+	private static ArrayList<String> possibleR(int i) {
+		ArrayList<String> list = new ArrayList<String>();
 		char oldPiece;
 		int r = i/8, c = i%8;
 		int t = 1;
@@ -139,7 +147,8 @@ public class Moves {
 					Main.chessBoard[r][c] = ' ';
 					Main.chessBoard[r+t*j][c] = 'R';
 					if (kingSafe()) {
-                        list=list + r + c + (r+t*j) + (c) + oldPiece;
+						String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r+t*j) + String.valueOf(c) + oldPiece;
+	                    list.add(tmp);
                     }
 					Main.chessBoard[r][c]='R';
                     Main.chessBoard[r+t*j][c]=oldPiece;
@@ -150,7 +159,8 @@ public class Moves {
 					Main.chessBoard[r][c] = ' ';
 					Main.chessBoard[r+t*j][c] =  'R';
 					if (kingSafe()) {
-                        list=list + r + c + (r+t*j) + (c) + oldPiece;
+						String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r+t*j) + String.valueOf(c) + oldPiece;
+	                    list.add(tmp);
                     }
 					Main.chessBoard[r][c]='R';
                     Main.chessBoard[r+t*j][c]=oldPiece;
@@ -169,7 +179,8 @@ public class Moves {
 					Main.chessBoard[r][c] = ' ';
 					Main.chessBoard[r][c+t*k] =  'R';
 					if (kingSafe()) {
-                        list=list + r + c + (r) + (c+t*k) + oldPiece;
+						String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r) + String.valueOf(c+t*k) + oldPiece;
+	                    list.add(tmp);
                     }
 					Main.chessBoard[r][c]='R';
                     Main.chessBoard[r][c+t*k]=oldPiece;
@@ -180,7 +191,8 @@ public class Moves {
 					Main.chessBoard[r][c] = ' ';
 					Main.chessBoard[r][c+t*k] =  'R';
 					if (kingSafe()) {
-                        list=list + r + c + (r) + (c+t*k) + oldPiece;
+						String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r) + String.valueOf(c+t*k) + oldPiece;
+	                    list.add(tmp);
                     }
 					Main.chessBoard[r][c]='R';
                     Main.chessBoard[r][c+t*k]=oldPiece;
@@ -195,8 +207,8 @@ public class Moves {
 		return list;
 	}
 
-	private static String possibleN(int i) {
-		String list = "";
+	private static ArrayList<String> possibleN(int i) {
+		ArrayList<String> list = new ArrayList<String>();
 		char oldPiece;
 		int r = i/8, c = i%8;
 		for (int j = -1; j <= 1; j += 2) {
@@ -207,7 +219,8 @@ public class Moves {
 						Main.chessBoard[r][c] = ' ';
 						Main.chessBoard[r+j][c+2*k] =  'N';
 						if (kingSafe()) {
-	                        list=list + r + c + (r+j) + (c+2*k) + oldPiece;
+							String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r+j) + String.valueOf(c+2*k) + oldPiece;
+		                    list.add(tmp);
 	                    }
 						Main.chessBoard[r][c]='N';
 	                    Main.chessBoard[r+j][c+2*k]=oldPiece;
@@ -222,7 +235,8 @@ public class Moves {
 						Main.chessBoard[r][c] = ' ';
 						Main.chessBoard[r+2*j][c+k] =  'N';
 						if (kingSafe()) {
-	                        list=list + r + c + (r+2*j) + (c+k) + oldPiece;
+							String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r+2*j) + String.valueOf(c+k) + oldPiece;
+		                    list.add(tmp);
 	                    }
 						Main.chessBoard[r][c]='N';
 	                    Main.chessBoard[r+2*j][c+k]=oldPiece;
@@ -235,8 +249,8 @@ public class Moves {
 		return list;
 	}
 
-	private static String possibleB(int i) {
-		String list = "";
+	private static ArrayList<String> possibleB(int i) {
+		ArrayList<String> list = new ArrayList<String>();
 		char oldPiece;
 		int r = i/8, c = i%8;
 		int t = 1;
@@ -248,7 +262,8 @@ public class Moves {
 						Main.chessBoard[r][c] = ' ';
 						Main.chessBoard[r+t*j][c+t*k] =  'B';
 						if (kingSafe()) {
-	                        list=list + r + c + (r+t*j) + (c+t*k) + oldPiece;
+							String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r+t*j) + String.valueOf(c+t*k) + oldPiece;
+		                    list.add(tmp);
 	                    }
 						Main.chessBoard[r][c]='B';
 	                    Main.chessBoard[r+t*j][c+t*k]=oldPiece;
@@ -259,11 +274,11 @@ public class Moves {
 						Main.chessBoard[r][c] = ' ';
 						Main.chessBoard[r+t*j][c+t*k] =  'B';
 						if (kingSafe()) {
-	                        list=list + r + c + (r+t*j) + (c+t*k) + oldPiece;
+							String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r+t*j) + String.valueOf(c+t*k) + oldPiece;
+		                    list.add(tmp);
 	                    }
 						Main.chessBoard[r][c]='B';
 	                    Main.chessBoard[r+t*j][c+t*k]=oldPiece;
-						
 					}
 				}
 				catch (Exception e) {}
@@ -273,8 +288,8 @@ public class Moves {
 		return list;
 	}
 
-	private static String possibleQ(int i) {
-		String list = "";
+	private static ArrayList<String> possibleQ(int i) {
+		ArrayList<String> list = new ArrayList<String>();
 		char oldPiece;
 		int r = i/8, c = i%8;
 		int t = 1;
@@ -286,7 +301,8 @@ public class Moves {
 						Main.chessBoard[r][c] = ' ';
 						Main.chessBoard[r+t*j][c+t*k] =  'Q';
 						if (kingSafe()) {
-	                        list=list + r + c + (r+t*j) + (c+t*k) + oldPiece;
+							String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r+t*j) + String.valueOf(c+t*k) + oldPiece;
+		                    list.add(tmp);
 	                    }
 						Main.chessBoard[r][c]='Q';
 	                    Main.chessBoard[r+t*j][c+t*k]=oldPiece;
@@ -297,7 +313,8 @@ public class Moves {
 						Main.chessBoard[r][c] = ' ';
 						Main.chessBoard[r+t*j][c+t*k] =  'Q';
 						if (kingSafe()) {
-	                        list=list + r + c + (r+t*j) + (c+t*k) + oldPiece;
+							String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r+t*j) + String.valueOf(c+t*k) + oldPiece;
+		                    list.add(tmp);
 	                    }
 						Main.chessBoard[r][c]='Q';
 	                    Main.chessBoard[r+t*j][c+t*k]=oldPiece;
@@ -311,8 +328,8 @@ public class Moves {
 		return list;
 	}
 
-	public static String possibleK(int i) {
-		String list = "";
+	public static ArrayList<String> possibleK(int i) {
+		ArrayList<String> list = new ArrayList<String>();
 		char oldPiece;
 		int r = i/8, c = i%8;
 		
@@ -326,7 +343,8 @@ public class Moves {
 					int kingTemp=Main.kingPositionWhite;
                     Main.kingPositionWhite=i+(j/3)*8+j%3-9;
                     if (kingSafe()) {
-                        list=list + r + c + (r-1+j/3) + (c-1+j%3) + oldPiece;
+                    	String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r-1+j/3) + String.valueOf(c-1+j%3) + oldPiece;
+	                    list.add(tmp);
                     }
                     Main.chessBoard[r][c]='K';
                     Main.chessBoard[r-1+j/3][c-1+j%3]=oldPiece;
@@ -352,7 +370,8 @@ public class Moves {
 					Main.chessBoard[r][c+2] = ' ';
 					Main.chessBoard[r][c] = 'K';
 					if (notInCheck && f1Safe && g1Safe) {
-						list = list + (r) + (c) + (r) + (c+2) + 'C';
+						String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r) + String.valueOf(c+2) + 'C';
+	                    list.add(tmp);
 					}
 				}
 			}
@@ -369,7 +388,8 @@ public class Moves {
 					Main.chessBoard[r][c-2] = ' ';
 					Main.chessBoard[r][c] = 'K';
 					if (notInCheck && d1Safe && c1Safe) {
-						list = list + (r) + (c) + (r) + (c-2) + 'C';
+						String tmp = String.valueOf(r) + String.valueOf(c) + String.valueOf(r) + String.valueOf(c-2) + 'C';
+	                    list.add(tmp);
 					}
 				}
 			}
@@ -613,23 +633,28 @@ public class Moves {
 		//Main.flipBoard();
 	}
 	
-	public static String sortMoves(String list) {
-        int[] score=new int [list.length()/5];
-        for (int i=0;i<list.length();i+=5) {
-            makeMove(list.substring(i, i+5));
-            score[i/5]=Rating.rating(-1, 0);
-            undoMove(list.substring(i, i+5));
+	public static ArrayList<String> sortMoves(ArrayList<String> list) {
+        int[] score=new int [list.size()];
+        for (int i=0;i<list.size();i++) {
+            makeMove(list.get(i));
+            score[i]=Rating.rating(-1, 0);
+            undoMove(list.get(i));
         }
-        String newListA="", newListB=list;
-        for (int i=0;i<Math.min(6, list.length()/5);i++) {//first few moves only
-            int max=-1000000, maxLocation=0;
-            for (int j=0;j<list.length()/5;j++) {
-                if (score[j]>max) {max=score[j]; maxLocation=j;}
+        
+        for (int i=0;i<list.size()-1;i++) {//first few moves only
+            
+            for (int j=1;j<list.size();j++) {
+                if (score[j]>score[i]) {
+                	int tmp = score[j];
+                	score[j] = score[i];
+                	score[i] = tmp;
+                	
+                	String tmp1 = list.get(j);
+                	list.set(j, list.get(i));
+                	list.set(i,tmp1);
+                }
             }
-            score[maxLocation]=-1000000;
-            newListA+=list.substring(maxLocation*5,maxLocation*5+5);
-            newListB=newListB.replace(list.substring(maxLocation*5,maxLocation*5+5), "");
         }
-        return newListA+newListB;
+        return list;
     }
 }

@@ -2,6 +2,7 @@ package mainapp;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.AbstractAction;
@@ -143,23 +144,23 @@ public class Main {
 	
 	public static String alphaBeta(int depth, int beta, int alpha, String move, int player) {
         //return in the form of 1234b##########
-        String list=Moves.possibleMoves();
+        ArrayList<String> list=Moves.possibleMoves();
         //only one possible move
-        if (list.length() == 5 && depth == globalDepth) {
-        	return list.substring(0,5)+(Rating.rating(list.length(), depth)*(1-player*2)); 
+        if (list.size() == 1 && depth == globalDepth) {
+        	return list.get(0)+(Rating.rating(list.size(), depth)*(1-player*2)); 
         }
         
-        if (depth==0 || list.length()==0) {return move+(Rating.rating(list.length(), depth)*(1-player*2));}
+        if (depth==0 || list.size()==0) {return move+(Rating.rating(list.size(), depth)*(1-player*2));}
 
         list=Moves.sortMoves(list);
         player=1-player;//either 1 or 0
-        for (int i=0;i<list.length();i+=5) {
-            Moves.makeMove(list.substring(i,i+5));
+        for (int i=0;i<list.size();i++) {
+            Moves.makeMove(list.get(i));
             flipBoard();
-            String returnString=alphaBeta(depth-1, beta, alpha, list.substring(i,i+5), player);
+            String returnString=alphaBeta(depth-1, beta, alpha, list.get(i), player);
             int value=Integer.valueOf(returnString.substring(5));
             flipBoard();
-            Moves.undoMove(list.substring(i,i+5));
+            Moves.undoMove(list.get(i));
             if (player==0) {
                 if (value<=beta) {beta=value; if (depth==globalDepth) {move=returnString.substring(0,5);}}
             } else {

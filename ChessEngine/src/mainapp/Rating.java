@@ -199,10 +199,10 @@ public class Rating {
 			case 'K':
 				if (material >= 1750) {
 					counter += kingMidBoard[i / 8][i % 8];
-					counter += Moves.possibleK(Main.kingPositionWhite).length() * 10;
+					counter += Moves.possibleK(Main.kingPositionWhite).size() * 50;
 				} else {
 					counter += kingEndBoard[i / 8][i % 8];
-					counter += Moves.possibleK(Main.kingPositionWhite).length() * 30;
+					counter += Moves.possibleK(Main.kingPositionWhite).size() * 150;
 				}
 				break;
 			}
