@@ -53,32 +53,42 @@ public class Rating {
         {-30,-40,-40,-50,-50,-40,-40,-30},
         {-20,-30,-30,-40,-40,-30,-30,-20},
         {-10,-20,-20,-20,-20,-20,-20,-10},
-        { 20, 20,  0,  0,  0,  0, 20, 20},
-        { 20, 30, 10,  0,  0, 10, 30, 20}};
+        { 20, 20, -5, -10,-10,-5, 20, 20},
+        { 20, 35, 10, -10,  0, 10, 35, 20}};
     static int kingEndBoard[][]={
         {-50,-40,-30,-20,-20,-30,-40,-50},
-        {-30,-20,-10,  0,  0,-10,-20,-30},
-        {-30,-10, 20, 30, 30, 20,-10,-30},
-        {-30,-10, 30, 40, 40, 30,-10,-30},
-        {-30,-10, 30, 40, 40, 30,-10,-30},
-        {-30,-10, 20, 30, 30, 20,-10,-30},
-        {-30,-30,  0,  0,  0,  0,-30,-30},
+        {-30, 0,  10,  0,  0, 10,  0,-30},
+        {-30, 10, 25, 30, 30, 25, 10,-30},
+        {-30, 10, 35, 40, 40, 35, 10,-30},
+        {-30, 10, 35, 40, 40, 35, 10,-30},
+        {-30, 10, 25, 30, 30, 25, 10,-30},
+        {-30,- 0,  10,  0,  0, 10, 0,-30},
         {-50,-35,-30,-25,-25,-30,-35,-50}};
+    
+    
+    public static int aggressivines = 1;
+    public static int moveablility = 1;
+    public static int positionaliness = 1;
+    public static int materialist = 1;
+    public static boolean mode3 = false;
+    
     
 	public static int rating(int list, int depth) {
 		int counter = 0, material = rateMaterial();
 		counter += rateAttack();
 		counter += material;
-		if (rateMoveability(list, depth, material) == 0) {
-			return 0;
-		}
+		counter += rateMoveability(list, depth, material);
 		counter += ratePositional(material);
+		counter += !Moves.whiteCastled && Moves.whiteKingNumberOfMoves != 0 && material >= 2000 ? -40 : 40;
+		counter += Moves.whiteCastled ? 20 : -20;
 		Main.flipBoard();
 		material = rateMaterial();
 		counter -= rateAttack();
 		counter -= material;
 		counter -= rateMoveability(list, depth, material);
 		counter -= ratePositional(material);
+		counter -= !Moves.whiteCastled && Moves.whiteKingNumberOfMoves != 0 && material >= 2000 ? -40 : 40;
+		counter -= Moves.whiteCastled ? 20 : -20;
 		Main.flipBoard();
 		return counter + depth * 50;
 	}
@@ -91,45 +101,46 @@ public class Rating {
 			case 'P': {
 				Main.kingPositionWhite = i;
 				if (!Moves.kingSafe()) {
-					counter -= 64;
+					counter -= 20;
 				}
 			}
 				break;
 			case 'R': {
 				Main.kingPositionWhite = i;
 				if (!Moves.kingSafe()) {
-					counter -= 500;
+					counter -= 100;
 				}
 			}
 				break;
 			case 'N': {
 				Main.kingPositionWhite = i;
 				if (!Moves.kingSafe()) {
-					counter -= 300;
+					counter -= 58;
 				}
 			}
 				break;
 			case 'B': {
 				Main.kingPositionWhite = i;
 				if (!Moves.kingSafe()) {
-					counter -= 300;
+					counter -= 62;
 				}
 			}
 				break;
 			case 'Q': {
 				Main.kingPositionWhite = i;
 				if (!Moves.kingSafe()) {
-					counter -= 900;
+					counter -= 200;
 				}
 			}
 				break;
 			}
 		}
 		Main.kingPositionWhite = tempPositionC;
+		
 		if (!Moves.kingSafe()) {
-			counter -= 200;
+			counter -= 101;
 		}
-		return counter / 2;
+		return counter * (3/2) * aggressivines;
 	}
 
 	public static int rateMaterial() {
@@ -160,21 +171,21 @@ public class Rating {
 				counter += 300;
 			}
 		}
-		return counter;
+		return counter * materialist;
 	}
 
 	public static int rateMoveability(int listLength, int depth, int material) {
 		int counter = 0;
 
-		counter += listLength;// 5 pointer per valid move
+		counter += listLength*5;// 5 pointer per valid move
 		if (listLength == 0) {// current side is in checkmate or stalemate
 			if (!Moves.kingSafe()) {// if checkmate
 				counter += -200000 * depth;
 			} else {// if stalemate
-				counter = 0;
+				counter += -150000*depth;
 			}
 		}
-		return counter;
+		return counter * (5/4) * moveablility;
 	}
 
 	public static int ratePositional(int material) {
@@ -198,8 +209,8 @@ public class Rating {
 				break;
 			case 'K':
 				if (material >= 1750) {
-					counter += kingMidBoard[i / 8][i % 8];
-					counter += Moves.possibleK(Main.kingPositionWhite).size() * 50;
+					counter += kingMidBoard[i / 8][i % 8] * 5;
+					//counter += Moves.possibleK(Main.kingPositionWhite).size() * 50;
 				} else {
 					counter += kingEndBoard[i / 8][i % 8];
 					counter += Moves.possibleK(Main.kingPositionWhite).size() * 150;
@@ -207,6 +218,6 @@ public class Rating {
 				break;
 			}
 		}
-		return counter;
+		return counter * (4/5) * positionaliness;
 	}
 }

@@ -3,21 +3,13 @@ package mainapp;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeListener;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class UserInterface extends JPanel {
 	static int mouseX, mouseY, newMouseX, newMouseY;
-	static int squareSize = 32;
+	static int squareSize = 70;
 	int player = 0;
 
 	public UserInterface() {
@@ -28,7 +20,7 @@ public class UserInterface extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		this.setBackground(Color.yellow);
+		this.setBackground(Color.WHITE);
 		// this.addMouseListener(this);
 		// this.addMouseMotionListener(this);
 		for (int i = 0; i < 64; i += 2) {
